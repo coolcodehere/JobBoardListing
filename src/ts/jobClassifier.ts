@@ -1,14 +1,11 @@
-import { getFile } from "./utility";
 import * as Entities from "./entities";
-import { parseJobData } from "./csvHandler";
+import { getJobBoards } from "./firebase";
 
-async function parseJSONData(path: string): Promise<Entities.JobBoardWrapper> {
-  const file = await getFile(path, true);
-  const jobBoards = JSON.parse(file.toString());
-
+async function parseJSONData() {
+  const jobBoards = await getJobBoards();
   const parsedJobBoards: Record<string, Entities.JobBoard> = {};
 
-  jobBoards.job_boards.forEach((jobBoard: Entities.JobBoard) => {
+  jobBoards.forEach((jobBoard: Entities.JobBoard) => {
     parsedJobBoards[jobBoard.root_domain] = jobBoard;
   });
 
@@ -18,7 +15,7 @@ async function parseJSONData(path: string): Promise<Entities.JobBoardWrapper> {
 async function classifyJobs(
   jobs: Entities.RawJobData[]
 ): Promise<Entities.ResolvedJobData[]> {
-  const jobBoards = await parseJSONData("./data/jobBoards.json");
+  const jobBoards = await parseJSONData();
 
   return jobs.map((job) => {
     return { ...job, jobSource: identifyJob(job, jobBoards) };
@@ -47,8 +44,3 @@ function getDomain(jobURL: string | undefined): string | undefined {
     return jobURL.split("/")[2]?.split(".").slice(1).join(".");
   }
 }
-
-(async () => {
-  const jobs = await parseJobData();
-  console.log(await classifyJobs(jobs));
-})();

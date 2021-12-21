@@ -1,0 +1,65 @@
+#app {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+body {
+  background-color: #e9e9e9;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+span,
+a,
+h1 {
+  font-family: Arial;
+}
+
+.boardBox {
+  border-radius: 10px;
+  background-color: #ffffff;
+  width: 29%;
+  height: 15em;
+  border: 1px solid black;
+  margin: 20px;
+  padding: 0.5rem;
+}
+
+.logo {
+  width: 5rem;
+  margin: 0.5rem;
+}
+
+.description {
+  text-align: center;
+  margin: 1rem;
+}
+
+.rating {
+  float: right;
+  font-size: 20px;
+  padding-right: 1em;
+}
+
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+a:active {
+  text-decoration: none;
+  color: black;
+}

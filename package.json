@@ -2,19 +2,31 @@
   "name": "assignment",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.24.0",
+    "firebase": "^9.6.1",
     "JSON": "^1.0.0",
     "papaparse": "^5.3.1"
   },
+  "browser": {
+    "fs": true,
+    "path": false,
+    "os": false
+  },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.5",
     "@types/papaparse": "^5.3.1",
-    "ts-node": "^10.4.0"
+    "parcel": "^2.0.1",
+    "ts-node": "^10.4.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
   }
 }
