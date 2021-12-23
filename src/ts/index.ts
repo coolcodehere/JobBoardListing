@@ -37,8 +37,35 @@ function createJobBoard(jobBoard: Entities.JobBoard) {
   return mainBox;
 }
 
+function drawTable(table: HTMLTableElement, jobs: Entities.ResolvedJobData[]) {
+  jobs.forEach((job) => {
+    addJobToTable(job, table);
+  });
+}
+
+// Add resolved job post object to table in HTML
+function addJobToTable(job: Entities.ResolvedJobData, table: HTMLTableElement) {
+  const row = table.insertRow();
+
+  const jobTitle = row.insertCell();
+  const jobCompany = row.insertCell();
+  const jobSource = row.insertCell();
+  const jobLink = row.insertCell();
+
+  jobTitle.innerText = job.jobTitle;
+  jobCompany.innerText = job.companyName;
+  jobSource.innerText = job.jobSource;
+  jobLink.innerText = job.jobURL;
+  jobLink.className = "jobLink";
+  jobLink.addEventListener("click", () => {
+    window.open(job.jobURL);
+  });
+}
+
 const app = document.getElementById("app");
 (async () => {
+  const jobs = Classifier.jobSourceResolver();
+
   for (const jobBoard of await getJobBoards()) {
     app?.appendChild(createJobBoard(jobBoard));
   }

@@ -3,8 +3,10 @@ import { initializeApp } from "firebase/app";
 import { child, getDatabase, get, ref } from "firebase/database";
 import * as Entities from "./entities";
 
+require("dotenv").config();
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAEDOxngod6xUPZblKytvryFpiuG12Nb4Y",
+  apiKey: process.env.API_KEY,
   authDomain: "pathrise-5a820.firebaseapp.com",
   databaseURL: "https://pathrise-5a820-default-rtdb.firebaseio.com",
   projectId: "pathrise-5a820",
@@ -30,12 +32,11 @@ export async function getJobBoards(): Promise<Entities.JobBoard[]> {
       throw new Error("Unknown error occurred");
     });
 
-  console.log(res);
   return res;
 }
 
-export async function getJobPostings(): Promise<Entities.RawJobData[]> {
-  return await get(child(dbRef, "jobs"))
+export async function getJobPostings(): Promise<Entities.JobData[]> {
+  const rawJobPostings = await get(child(dbRef, "jobs"))
     .then((snapshot: any) => {
       if (snapshot.exists()) {
         return snapshot.val();
@@ -46,4 +47,13 @@ export async function getJobPostings(): Promise<Entities.RawJobData[]> {
     .catch((error) => {
       throw new Error("Unknown error occurred");
     });
+
+  return rawJobPostings.map((post: Entities.RawJobData) => {
+    return {
+      id: post["ID (primary key)"],
+      companyName: post["Company Name"],
+      jobTitle: post["Job Title"],
+      jobURL: post["Job URL"],
+    };
+  });
 }

@@ -1,7 +1,14 @@
 export interface RawJobData {
+  "ID (primary key)": string;
+  "Company Name": string;
+  "Job Title": string;
+  "Job URL": string;
+}
+
+export interface JobData {
   id: string;
-  companyName: string;
   jobTitle: string;
+  companyName: string;
   jobURL: string;
 }
 
@@ -17,7 +24,7 @@ export interface JobBoard {
   description: string;
 }
 
-export interface ResolvedJobData extends RawJobData {
+export interface ResolvedJobData extends JobData {
   jobSource: string;
 }
 

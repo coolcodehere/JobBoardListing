@@ -1,8 +1,7 @@
 import * as Entities from "./entities";
-import { getJobBoards } from "./firebase";
+import { getJobBoards, getJobPostings } from "./firebase";
 
-async function parseJSONData() {
-  const jobBoards = await getJobBoards();
+async function parseJobBoards(jobBoards: Entities.JobBoard[]) {
   const parsedJobBoards: Record<string, Entities.JobBoard> = {};
 
   jobBoards.forEach((jobBoard: Entities.JobBoard) => {
@@ -13,34 +12,50 @@ async function parseJSONData() {
 }
 
 async function classifyJobs(
-  jobs: Entities.RawJobData[]
+  jobs: Entities.JobData[],
+  jobBoards: Entities.JobBoardWrapper
 ): Promise<Entities.ResolvedJobData[]> {
-  const jobBoards = await parseJSONData();
-
   return jobs.map((job) => {
-    return { ...job, jobSource: identifyJob(job, jobBoards) };
+    const jobDomain = getDomain(job.jobURL);
+    let source: string;
+    if (!jobDomain) {
+      source = "Unknown";
+    } else if (jobBoards[jobDomain]) {
+      source = jobBoards[jobDomain].name;
+    } else if (
+      jobDomain.toLowerCase().includes(job.companyName.toLowerCase())
+    ) {
+      source = "Company Website";
+    } else {
+      source = "Unknown";
+    }
+
+    return { ...job, jobSource: source };
   });
-}
-
-function identifyJob(
-  job: Entities.RawJobData,
-  jobBoard: Entities.JobBoardWrapper
-): string {
-  const jobDomain = getDomain(job.jobURL);
-
-  if (!jobDomain) {
-    return "Unknown";
-  } else if (jobBoard[jobDomain]) {
-    return jobBoard[jobDomain].name;
-  } else if (jobDomain.toLowerCase().includes(job.companyName.toLowerCase())) {
-    return "Company Website";
-  }
-
-  return "Unknown";
 }
 
 function getDomain(jobURL: string | undefined): string | undefined {
   if (jobURL) {
     return jobURL.split("/")[2]?.split(".").slice(1).join(".");
   }
+}
+
+export async function jobSourceResolver(): Promise<Entities.ResolvedJobData[]> {
+  const jobBoards = await parseJobBoards(await getJobBoards());
+  const jobPostings = await getJobPostings();
+  return await classifyJobs(jobPostings, jobBoards);
+}
+
+async function indexJobsBySource(jobs: Entities.ResolvedJobData[]) {
+  const jobSources: Record<string, Entities.ResolvedJobData[]> = {};
+
+  jobs.forEach((job) => {
+    if (!jobSources[job.jobSource]) {
+      jobSources[job.jobSource] = [];
+    }
+
+    jobSources[job.jobSource].push(job);
+  });
+
+  return jobSources;
 }
