@@ -3,10 +3,8 @@ import { initializeApp } from "firebase/app";
 import { child, getDatabase, get, ref } from "firebase/database";
 import * as Entities from "./entities";
 
-require("dotenv").config();
-
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
+  apiKey: "AIzaSyAEDOxngod6xUPZblKytvryFpiuG12Nb4Y",
   authDomain: "pathrise-5a820.firebaseapp.com",
   databaseURL: "https://pathrise-5a820-default-rtdb.firebaseio.com",
   projectId: "pathrise-5a820",
@@ -52,7 +50,7 @@ export async function getJobPostings(): Promise<Entities.JobData[]> {
     return {
       id: post["ID (primary key)"],
       companyName: post["Company Name"],
-      jobTitle: post["Job Title"],
+      jobTitle: !post["Job Title"] ? "Unknown" : post["Job Title"],
       jobURL: post["Job URL"],
     };
   });

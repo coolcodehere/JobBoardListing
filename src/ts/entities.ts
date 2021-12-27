@@ -31,3 +31,7 @@ export interface ResolvedJobData extends JobData {
 export interface JobBoardWrapper {
   [index: string]: JobBoard;
 }
+
+export interface indexedJobPostings {
+  [index: string]: ResolvedJobData[];
+}

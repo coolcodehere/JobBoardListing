@@ -46,9 +46,9 @@ export async function jobSourceResolver(): Promise<Entities.ResolvedJobData[]> {
   return await classifyJobs(jobPostings, jobBoards);
 }
 
-async function indexJobsBySource(jobs: Entities.ResolvedJobData[]) {
+export async function indexJobsBySource(): Promise<Entities.indexedJobPostings> {
   const jobSources: Record<string, Entities.ResolvedJobData[]> = {};
-
+  const jobs = await jobSourceResolver();
   jobs.forEach((job) => {
     if (!jobSources[job.jobSource]) {
       jobSources[job.jobSource] = [];
