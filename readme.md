@@ -51,8 +51,14 @@ The two steps to this are scraping the page for a location, and finding the dist
    US state codes and check for a "<CITY_NAME>, " directly before it. I'm restricting this to only US locations because I
    don't know enough about how other places structure their addresses.
 
+   If no location could be found, I wouldn't display anything to do with distance.
+
 2. To get the distance between the two places, I would query the api listed in the docs below, and parse accordingly to get the miles between locations.
 
 https://developers.google.com/maps/documentation/distance-matrix/overview#maps_http_distancematrix-txt
 
---Detecting if an
+--Detecting if a listing isn't active anymore--
+
+Since most boards get rid of their listings after they fill the role, I would scrape for the role name in the page. I'm
+scraping for the board name since at the moment, I think that's where the job titles would come from to begin with. While
+this isn't the most robust solution, I believe it's the best since we're working with a wide range of boards.
