@@ -1,6 +1,8 @@
 node_modules
 package-lock.json
 *.log
+dist/*
+*.js
 .parcel-cache
 .vscode
 *.license.txt
