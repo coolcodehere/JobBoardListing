@@ -7,6 +7,20 @@ async function parseJobBoards(jobBoards: Entities.JobBoard[]) {
   jobBoards.forEach((jobBoard: Entities.JobBoard) => {
     parsedJobBoards[jobBoard.root_domain] = jobBoard;
   });
+  parsedJobBoards["Company Website"] = {
+    name: "Company Website",
+    rating: "Mixed",
+    root_domain: "",
+    logo_file: "",
+    description: "Jobs posted on their respective company's website.",
+  };
+  parsedJobBoards["Unknown"] = {
+    name: "Unknown Source",
+    rating: "Mixed",
+    root_domain: "",
+    logo_file: "",
+    description: "Jobs posted on an unknown source.",
+  };
 
   return parsedJobBoards;
 }

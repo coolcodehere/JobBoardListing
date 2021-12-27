@@ -158,6 +158,7 @@ async function app(
       tableSubDiv.appendChild(title);
       tableSubDiv.appendChild(table);
     });
+
     boardsSubDiv.appendChild(board);
   }
 }
