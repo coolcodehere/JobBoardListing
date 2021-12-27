@@ -1,8 +1,7 @@
 node_modules
 package-lock.json
 *.log
-*.js
 .parcel-cache
-dist
+.vscode
 *.license.txt
 *.env
