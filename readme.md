@@ -21,8 +21,6 @@ Jobs are classified by:
 
 All data is fetched from Firebase in the same format it was provided to me in the original email.
 
----
-
 --Instructions to the where the top-level job source resolution callsite starts--
 
 Refer to src/ts/csvCreator.ts for the start of the resolution logic. The resolved jobs CSV can be created by running this file with
@@ -40,7 +38,9 @@ Firebase: Used to interact with Firebase to retrieve data.
 I'm fairly inexperienced when it comes to rolling a project with react from the beginning so I decided to avoid it.
 I intend to rewrite the front end in React within the next few weeks however since it makes this so much easier.
 
-A publicly accessible web URL to view Part 2: Building the interface
+--A publicly accessible web URL to view Part 2: Building the interface--
+
+https://sleepy-bell-aba587.netlify.app/
 
 --Location Parsing--
 
