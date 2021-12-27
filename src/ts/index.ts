@@ -9,7 +9,6 @@ function createJobBoard(jobBoard: Entities.JobBoard) {
   const titleDiv = document.createElement("div");
   const title = document.createElement("span");
   const rating = document.createElement("p");
-  const numJobs = document.createElement("p");
 
   description.innerText = jobBoard.description;
   rating.innerText = jobBoard.rating;
@@ -23,7 +22,9 @@ function createJobBoard(jobBoard: Entities.JobBoard) {
   titleDiv.className = "horizontal-center vertical-center";
   rating.style.color = getRatingColor(jobBoard.rating);
 
-  titleDiv.appendChild(companyLogo);
+  if (companyLogo.src != "") {
+    titleDiv.appendChild(companyLogo);
+  }
   titleDiv.appendChild(title);
   mainBox.appendChild(rating);
   mainBox.appendChild(titleDiv);
@@ -148,11 +149,16 @@ async function app(
       toggleDisplay("table", "boards");
       let title = document.getElementById("tableTitle");
       if (!title) {
-        title = document.createElement("p");
-        title.className = "horizontal-center tableTitle";
+        title = createTitle();
       }
 
-      title.innerText = `Jobs on ${jobBoard.name}`;
+      if (jobBoard.name === "Company Website") {
+        title.innerText = "Jobs from Company Websites";
+      } else if (jobBoard.name === "Unknown") {
+        title.innerText = "Jobs from unknown sources";
+      } else {
+        title.innerText = `Jobs from ${jobBoard.name}`;
+      }
 
       const table = createTable(jobBoard, (await jobPostings)[jobBoard.name]);
       tableSubDiv.appendChild(title);
@@ -163,6 +169,15 @@ async function app(
   }
 }
 
+function createTitle() {
+  const title = document.createElement("p");
+  title.style.minWidth = "100%";
+  title.style.textAlign = "center";
+  title.style.fontSize = "2rem";
+  title.style.margin = "20px";
+  title.style.color = "#FFFFFF";
+  return title;
+}
 (async () => {
   const jobBoards = await getJobBoards();
   const indexedJobPostings = Classifier.indexJobsBySource();

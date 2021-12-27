@@ -30,6 +30,21 @@ export async function getJobBoards(): Promise<Entities.JobBoard[]> {
       throw new Error("Unknown error occurred");
     });
 
+  res.push({
+    name: "Company Website",
+    rating: "Mixed",
+    root_domain: "",
+    logo_file: "",
+    description: "Jobs posted on their respective company's website.",
+  });
+  res.push({
+    name: "Unknown",
+    rating: "Mixed",
+    root_domain: "",
+    logo_file: "",
+    description: "Jobs posted on an unknown source.",
+  });
+
   return res;
 }
 
